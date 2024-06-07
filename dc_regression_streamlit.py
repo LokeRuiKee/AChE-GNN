@@ -385,6 +385,3 @@ test_pred_df.to_csv(f"/content/drive/MyDrive/Colab Notebooks/Dataset/data/proces
 import streamlit as st
 
 st.title('AChE Inhibitor Prediction Dashboard')
-
-!streamlit run app.py &>/content/logs.txt & curl https://loca.lt/mytunnelpassword & npx localtunnel --port 8501
-
