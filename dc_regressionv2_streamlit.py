@@ -380,8 +380,6 @@ test_pred_df.to_csv(f"/content/drive/MyDrive/Colab Notebooks/Dataset/data/proces
 
 """# Streamlit"""
 
-!pip install -q streamlit
-
 import streamlit as st
 
 st.title('AChE Inhibitor Prediction Dashboard')
