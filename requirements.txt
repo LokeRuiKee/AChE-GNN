@@ -1,3 +1,11 @@
 rdkit
 colorama
 deepchem
+warnings
+time
+copy
+pickle
+numpy
+pandas
+sklearn
+os
