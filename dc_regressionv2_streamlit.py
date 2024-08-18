@@ -377,9 +377,3 @@ filename = f"test_pred_{current_time_malaysia}.csv"
 
 # Save the DataFrame to the specified path with the new filename
 test_pred_df.to_csv(f"/content/drive/MyDrive/Colab Notebooks/Dataset/data/process/continuous/results/{filename}", index=False)
-
-"""# Streamlit"""
-
-import streamlit as st
-
-st.title('AChE Inhibitor Prediction Dashboard')
