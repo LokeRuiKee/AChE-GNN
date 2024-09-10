@@ -1,0 +1,6 @@
+Metric,Average Train Score,Average Test Score,Final Test Score,,,,
+accuracy_score,0.830674847,0.767484663,0.715337423,,,,50 epoch
+f1_score,0.75032141,0.658278365,0.597222222,,,,
+roc_auc_score,0.982703014,0.897844479,0.909150658,,,,
+recall_score,0.630657017,0.552740055,0.437659033,,,,
+matthews_corrcoef,0.684486891,0.544252896,0.492874173,,,,

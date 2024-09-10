@@ -65,44 +65,24 @@ for metric in metrics:
 print(model.model.summary())
 
 # ------------------- GraphXAI Integration -------------------
+from graphxai.explainers import GNNExplainer, PGExplainer, IntegratedGradExplainer
 
-# Define the torch-geometric graph data for GraphXAI
-# Extract a batch of molecules to interpret
-batch_data = next(iter(train_dataset.iterbatches(batch_size=1, deterministic=True)))
+# Initialize PGExplainer
+pgex = PGExplainer(model, emb_layer_name='gin2', max_epochs=10, lr=0.1)
 
-print(batch_data)
+# Train PGExplainer on the dataset
+# Assuming `data` is a PyTorch Geometric Data object containing the entire dataset
+pgex.train_explanation_model(data)
 
-from torch_geometric.data import Data
+# Initialize IntegratedGradExplainer
+igex = IntegratedGradExplainer(model, criterion=criterion)
 
-# Convert DeepChem graph to PyTorch Geometric Data object (needed by GraphXAI)
-def deepchem_to_torch_geometric(dc_batch):
-    graphs = []
-    conv_mol_array, labels, weights, ids = dc_batch
-    
-    for X_b, y_b in zip(conv_mol_array, labels):
-        # Extract node features and edge index from the ConvMol object
-        node_features = X_b.get_atom_features()  # Use the appropriate method to get node features
-        edge_index = X_b.GetBonds()   # Use the appropriate method to get edge index
+# Generate explanations for a specific prediction
+# Assuming `data` is a PyTorch Geometric Data object and `node_idx` is the index of the node to explain
+node_idx = 0  # Example node index
+pgexplanation = pgex.explain_node(node_idx, data)
+igexplanation = igex.explain_node(node_idx, data)
 
-        # Convert to PyTorch tensor
-        y_tensor = torch.tensor(y_b, dtype=torch.float)
-
-        # Create PyTorch Geometric Data object
-        graphs.append(Data(x=torch.tensor(node_features, dtype=torch.float),
-                           edge_index=torch.tensor(edge_index, dtype=torch.long),
-                           y=y_tensor))
-
-    return graphs
-
-torch_geometric_graphs = deepchem_to_torch_geometric(batch_data)
-
-# Initialize GNNExplainer from GraphXAI
-explainer = GNNExplainer(model.model, epochs=200)
-
-# Apply explainer to one of the graph examples
-for graph in torch_geometric_graphs:
-    node_feat_mask, edge_mask = explainer(graph.x, graph.edge_index)
-
-    # Visualize or analyze the explanation
-    print("Node feature mask: ", node_feat_mask)
-    print("Edge mask: ", edge_mask)
+# Print explanations
+print("PGExplainer Explanation:", pgexplanation)
+print("IntegratedGradExplainer Explanation:", igexplanation)
